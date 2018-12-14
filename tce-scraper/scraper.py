@@ -6,15 +6,16 @@ class TceCeSetSpider(scrapy.Spider):
   start_urls = ['https://www.tce.ce.gov.br:8082/portal/paginas/informacoes-funcionais.xhtml']
 
   def parse(self, response):
-    SET_SELECTOR = '#form:categoriaFuncional'
-    for pessoal in response.css(SET_SELECTOR):
-      NAME_SELECTOR = 'option ::text'
+    SET_SELECTOR = '//select[@id="form:categoriaFuncional"]//option/text()'
+    for pessoal in response.xpath(SET_SELECTOR):
+      NAME_SELECTOR = '//text()' 
+      print(pessoal)
 #      PIECES_SELECTOR = './/dl[dt/text() = "Pieces"]/dd/a/text()'
 #      MINIFIGS_SELECTOR = './/dl[dt/text() = "Minifigs"]/dd[2]/a/text()'
 #      IMAGE_SELECTOR = 'img ::attr(src)'
 
       yield {
-        'name': pessoal.css(NAME_SELECTOR).extract_first(),
+        'name': pessoal.extract(),
 #        'pieces': brickset.xpath(PIECES_SELECTOR).extract_first(),
 #        'minifigs': brickset.xpath(MINIFIGS_SELECTOR).extract_first(),
 #        'image': brickset.css(IMAGE_SELECTOR).extract_first(),
